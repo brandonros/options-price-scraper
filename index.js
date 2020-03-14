@@ -19,13 +19,11 @@ const databaseQuery = async (sqlStatement) => {
   }
 }
 
-const scrapeTickers = async (tickers) => {
-  for (let i = 0; i < tickers.length; ++i) {
-    const ticker = tickers[i]
-    const response = await fetch(`https://www.optionsprofitcalculator.com/ajax/getOptions?stock=${ticker}&reqId=1`)
-    const responseBody = await response.json()
-    await databaseQuery(SQL`INSERT into option_prices(ticker, prices, scraped_at) VALUES (${ticker}, ${JSON.stringify(responseBody)}, NOW())`)
-  }
+const scrapeTicker = async (ticker) => {
+  const response = await fetch(`https://www.optionsprofitcalculator.com/ajax/getOptions?stock=${ticker}&reqId=1`)
+  const responseBody = await response.json()
+  await databaseQuery(SQL`INSERT into option_prices(ticker, prices, scraped_at) VALUES (${ticker}, ${JSON.stringify(responseBody)}, NOW())`)
+  return responseBody
 }
 
 const getTickerPrices = async (tickers) => {
@@ -34,13 +32,13 @@ const getTickerPrices = async (tickers) => {
 
 const app = express()
 app.use(express.json())
-app.post('/tickers/scrape', (req, res) => {
-  scrapeTickers(req.body.tickers)
-  .then(() => res.send({ success: true }))
+app.post('/tickers/:ticker/scrape', (req, res) => {
+  scrapeTicker(req.params.ticker)
+  .then((prices) => res.send(prices))
   .catch((err) => res.status(500).send({ error: err.stack }))
 })
-app.get('/tickers/prices', (req, res) => {
-  get(req.query.tickers)
+app.get('/tickers/:ticker/prices', (req, res) => {
+  getTickerPrices(req.params.ticker)
   .then((prices) => res.send(prices))
   .catch((err) => res.status(500).send({ error: err.stack }))
 })

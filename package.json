@@ -1,0 +1,25 @@
+{
+  "name": "options-price-scraper",
+  "version": "1.0.0",
+  "description": "node.js cron job to scrape stock option prices",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brandonros/options-price-scraper.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brandonros/options-price-scraper/issues"
+  },
+  "homepage": "https://github.com/brandonros/options-price-scraper#readme",
+  "dependencies": {
+    "cron": "^1.8.2",
+    "node-fetch": "^2.6.0",
+    "pg": "^7.18.2",
+    "sql-template-strings": "^2.2.2"
+  }
+}

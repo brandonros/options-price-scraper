@@ -32,7 +32,7 @@ const getTickerPrices = async (tickers) => {
 
 const app = express()
 app.use(express.json())
-app.post('/tickers/:ticker/scrape', (req, res) => {
+app.get('/tickers/:ticker/scrape', (req, res) => {
   scrapeTicker(req.params.ticker)
   .then((prices) => res.send(prices))
   .catch((err) => res.status(500).send({ error: err.stack }))

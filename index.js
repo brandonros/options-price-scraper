@@ -2,6 +2,9 @@ const pg = require('pg')
 const express = require('express')
 const fetch = require('node-fetch')
 const SQL = require('sql-template-strings')
+const cron = require('node-cron')
+
+const port = process.env.PORT || 3000
 
 const databaseQuery = async (sqlStatement) => {
   const client = new pg.Client({
@@ -41,4 +44,8 @@ app.get('/tickers/:ticker/prices', (req, res) => {
   .then((prices) => res.send(prices))
   .catch((err) => res.status(500).send({ error: err.stack }))
 })
-app.listen(process.env.PORT || 3000, () => console.log('Listening...'))
+app.listen(port, () => console.log('Listening...'))
+
+cron.schedule('* * * * *', () => {
+  fetch(`http://localhost:${port}/tickers/SPY/prices/scrape`)
+})

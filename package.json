@@ -18,6 +18,7 @@
   "homepage": "https://github.com/brandonros/options-price-scraper#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "node-cron": "^2.0.3",
     "node-fetch": "^2.6.0",
     "pg": "^7.18.2",
     "sql-template-strings": "^2.2.2"

@@ -19,7 +19,7 @@ const databaseQuery = async (sqlStatement) => {
   }
 }
 
-const scrapeTicker = async (ticker) => {
+const scrapeTickerPrices = async (ticker) => {
   const response = await fetch(`https://www.optionsprofitcalculator.com/ajax/getOptions?stock=${ticker}&reqId=1`)
   const responseBody = await response.json()
   await databaseQuery(SQL`INSERT into option_prices(ticker, prices, scraped_at) VALUES (${ticker}, ${JSON.stringify(responseBody)}, NOW())`)
@@ -31,9 +31,8 @@ const getTickerPrices = async (tickers) => {
 }
 
 const app = express()
-app.use(express.json())
-app.get('/tickers/:ticker/scrape', (req, res) => {
-  scrapeTicker(req.params.ticker)
+app.get('/tickers/:ticker/prices/scrape', (req, res) => {
+  scrapeTickerPrices(req.params.ticker)
   .then((prices) => res.send(prices))
   .catch((err) => res.status(500).send({ error: err.stack }))
 })

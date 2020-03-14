@@ -24,7 +24,7 @@ const scrapeTickers = async (tickers) => {
     const ticker = tickers[i]
     const response = await fetch(`https://www.optionsprofitcalculator.com/ajax/getOptions?stock=${ticker}&reqId=1`)
     const responseBody = await response.json()
-    await databaseQuery(SQL`INSERT into option_prices(ticker, prices, scraped_at) VALUES (${ticker}, ${JSON.stringify(prices)}, NOW())`)
+    await databaseQuery(SQL`INSERT into option_prices(ticker, prices, scraped_at) VALUES (${ticker}, ${JSON.stringify(responseBody)}, NOW())`)
   }
 }
 

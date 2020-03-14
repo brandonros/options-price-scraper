@@ -46,6 +46,6 @@ app.get('/tickers/:ticker/prices', (req, res) => {
 })
 app.listen(port, () => console.log('Listening...'))
 
-cron.schedule('* * * * *', () => {
+cron.schedule('* 4-16 * * 1-5', () => {
   fetch(`http://localhost:${port}/tickers/SPY/prices/scrape`)
 })
